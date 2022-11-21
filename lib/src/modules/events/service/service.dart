@@ -2,8 +2,10 @@
 import 'dart:developer';
 
 import 'package:challenge/src/core/remote_data_source/api_client.dart';
-import 'package:challenge/src/modules/characters/models/character_model.dart';
-import 'package:challenge/src/modules/characters/service/service_interface.dart';
+import 'package:challenge/src/modules/events/models/event_model.dart';
+
+import 'package:challenge/src/modules/events/service/service_interface.dart';
+
 import 'package:challenge/src/shared/utils/app_configs.dart';
 
 class Services implements ServiceInterface {
@@ -13,12 +15,12 @@ class Services implements ServiceInterface {
   });
 
   @override
-  Future<CharacterModel> getCharacters() async {
+  Future<EventModel> getCharacters() async {
     final response = await client.getRequest('${AppConfigs.baseUrl}/character');
     inspect(response);
     switch (response.statusCode) {
       case 200:
-        return CharacterModel.fromJson(response.data);
+        return EventModel.fromJson(response.data);
     }
 
     throw UnimplementedError();

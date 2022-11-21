@@ -3,8 +3,6 @@ import 'package:challenge/src/modules/auth/service/auth_service_interface.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobx/mobx.dart';
 
-import 'package:challenge/src/modules/characters/service/service_interface.dart';
-
 part 'auth_store.g.dart';
 
 class AuthStore = _AuthStoreBase with _$AuthStore;

@@ -9,9 +9,8 @@ import 'package:challenge/src/modules/auth/controller/auth_store.dart';
 import 'package:challenge/src/modules/auth/service/auth_service.dart';
 import 'package:challenge/src/modules/auth/service/auth_service_interface.dart';
 
-import 'package:challenge/src/modules/characters/controller/home_controller.dart';
-import 'package:challenge/src/modules/characters/service/service.dart';
-import 'package:challenge/src/modules/characters/service/service_interface.dart';
+import 'package:challenge/src/modules/events/service/service.dart';
+import 'package:challenge/src/modules/events/service/service_interface.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -47,10 +46,6 @@ class MainServiceLocator {
     //service implementation
     locator.registerFactory<ApiClient>(() => DioImpl(
           dio: locator.get<Dio>(),
-        ));
-
-    locator.registerFactory<HomeController>(() => HomeController(
-          services: locator.get<ServiceInterface>(),
         ));
 
     locator.registerFactory<AuthStore>(

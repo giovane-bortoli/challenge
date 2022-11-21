@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ListCharacters extends StatelessWidget {
-  const ListCharacters({super.key});
+class ListEventsView extends StatelessWidget {
+  const ListEventsView({super.key});
 
   @override
   Widget build(BuildContext context) {

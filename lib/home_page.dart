@@ -1,12 +1,8 @@
 import 'dart:developer';
 
 import 'package:challenge/main.dart';
-import 'package:challenge/src/modules/characters/controller/home_controller.dart';
-import 'package:challenge/src/modules/characters/service/service.dart';
 
 import 'package:flutter/material.dart';
-
-import 'src/modules/characters/service/service_interface.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
@@ -18,7 +14,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final controller = locator<HomeController>();
+  // final controller = locator<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => controller.getCharacters(),
+        onPressed: () => {},
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
