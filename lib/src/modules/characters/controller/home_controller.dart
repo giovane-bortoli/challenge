@@ -13,6 +13,6 @@ class HomeController extends ChangeNotifier {
 
   Future<void> getCharacters() async {
     final response = await services.getCharacters();
-    inspect(response);
+    //inspect(response);
   }
 }
