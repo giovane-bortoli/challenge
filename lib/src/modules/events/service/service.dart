@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 import 'package:challenge/src/core/remote_data_source/api_client.dart';
+import 'package:challenge/src/core/remote_data_source/errors/handle_erros.dart';
 import 'package:challenge/src/modules/events/models/event_model.dart';
 
 import 'package:challenge/src/modules/events/service/service_interface.dart';
@@ -15,14 +16,25 @@ class Services implements ServiceInterface {
   });
 
   @override
-  Future<EventModel> getCharacters() async {
-    final response = await client.getRequest('${AppConfigs.baseUrl}/character');
+  Future<List<EventModel>> getCharacters() async {
+    final response = await client.getRequest('${AppConfigs.baseUrl}/events');
     inspect(response);
     switch (response.statusCode) {
       case 200:
-        return EventModel.fromJson(response.data);
-    }
+        return List.from(response.data)
+            .map((e) => EventModel.fromJson(e))
+            .toList();
+      case 404:
+        throw NotFoundException();
 
-    throw UnimplementedError();
+      case 403:
+        throw ForbiddenException();
+
+      case 500:
+        throw InternalServerException();
+
+      default:
+        throw GenericException();
+    }
   }
 }

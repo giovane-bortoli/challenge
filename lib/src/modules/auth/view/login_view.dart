@@ -111,7 +111,7 @@ class _LoginViewState extends State<LoginView> {
                   password: authStore.password,
                 );
                 if (result.runtimeType == UserCredential) {
-                  Navigator.popAndPushNamed(context, '/home');
+                  Navigator.popAndPushNamed(context, '/events');
                 }
               } catch (e) {
                 await HandleFirebaseErrors.getErrorMessageView(e, context);

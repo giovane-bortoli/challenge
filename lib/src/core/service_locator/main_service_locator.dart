@@ -8,6 +8,7 @@ import 'package:challenge/src/core/service_locator/service_locator.dart';
 import 'package:challenge/src/modules/auth/controller/auth_store.dart';
 import 'package:challenge/src/modules/auth/service/auth_service.dart';
 import 'package:challenge/src/modules/auth/service/auth_service_interface.dart';
+import 'package:challenge/src/modules/events/controller/event_store.dart';
 
 import 'package:challenge/src/modules/events/service/service.dart';
 import 'package:challenge/src/modules/events/service/service_interface.dart';
@@ -50,5 +51,8 @@ class MainServiceLocator {
 
     locator.registerFactory<AuthStore>(
         () => AuthStore(auth: locator.get<AuthServiceInterface>()));
+
+    locator.registerSingleton<EventStore>(
+        EventStore(service: locator.get<ServiceInterface>()));
   }
 }

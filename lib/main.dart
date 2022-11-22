@@ -9,7 +9,6 @@ GetIt locator = GetIt.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await setupLibraries();
   runApp(const MyApp());
 }

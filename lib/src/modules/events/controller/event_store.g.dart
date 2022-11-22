@@ -41,6 +41,30 @@ mixin _$EventStore on _EventStoreBase, Store {
     });
   }
 
+  late final _$softEventListAtom =
+      Atom(name: '_EventStoreBase.softEventList', context: context);
+
+  @override
+  List<EventModel> get softEventList {
+    _$softEventListAtom.reportRead();
+    return super.softEventList;
+  }
+
+  @override
+  set softEventList(List<EventModel> value) {
+    _$softEventListAtom.reportWrite(value, super.softEventList, () {
+      super.softEventList = value;
+    });
+  }
+
+  late final _$getSoftEventListAsyncAction =
+      AsyncAction('_EventStoreBase.getSoftEventList', context: context);
+
+  @override
+  Future<void> getSoftEventList() {
+    return _$getSoftEventListAsyncAction.run(() => super.getSoftEventList());
+  }
+
   late final _$_EventStoreBaseActionController =
       ActionController(name: '_EventStoreBase', context: context);
 
@@ -89,10 +113,22 @@ mixin _$EventStore on _EventStoreBase, Store {
   }
 
   @override
+  void setSoftEventList(List<EventModel> value) {
+    final _$actionInfo = _$_EventStoreBaseActionController.startAction(
+        name: '_EventStoreBase.setSoftEventList');
+    try {
+      return super.setSoftEventList(value);
+    } finally {
+      _$_EventStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 isLoading: ${isLoading},
-isError: ${isError}
+isError: ${isError},
+softEventList: ${softEventList}
     ''';
   }
 }
