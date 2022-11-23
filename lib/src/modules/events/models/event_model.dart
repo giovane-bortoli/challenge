@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:challenge/src/modules/events/models/address_model.dart';
 
 class EventModel {
@@ -47,4 +49,6 @@ class EventModel {
 
     return data;
   }
+
+  String serialize(EventModel eventModel) => jsonEncode(EventModel);
 }

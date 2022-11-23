@@ -57,12 +57,36 @@ mixin _$EventStore on _EventStoreBase, Store {
     });
   }
 
+  late final _$favoriteEventListAtom =
+      Atom(name: '_EventStoreBase.favoriteEventList', context: context);
+
+  @override
+  List<EventModel> get favoriteEventList {
+    _$favoriteEventListAtom.reportRead();
+    return super.favoriteEventList;
+  }
+
+  @override
+  set favoriteEventList(List<EventModel> value) {
+    _$favoriteEventListAtom.reportWrite(value, super.favoriteEventList, () {
+      super.favoriteEventList = value;
+    });
+  }
+
   late final _$getSoftEventListAsyncAction =
       AsyncAction('_EventStoreBase.getSoftEventList', context: context);
 
   @override
   Future<void> getSoftEventList() {
     return _$getSoftEventListAsyncAction.run(() => super.getSoftEventList());
+  }
+
+  late final _$loadFavoriteListAsyncAction =
+      AsyncAction('_EventStoreBase.loadFavoriteList', context: context);
+
+  @override
+  Future<void> loadFavoriteList() {
+    return _$loadFavoriteListAsyncAction.run(() => super.loadFavoriteList());
   }
 
   late final _$_EventStoreBaseActionController =
@@ -124,11 +148,34 @@ mixin _$EventStore on _EventStoreBase, Store {
   }
 
   @override
+  void setFavoriteEventList(List<EventModel> value) {
+    final _$actionInfo = _$_EventStoreBaseActionController.startAction(
+        name: '_EventStoreBase.setFavoriteEventList');
+    try {
+      return super.setFavoriteEventList(value);
+    } finally {
+      _$_EventStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void addFavoriteItemList(EventModel model) {
+    final _$actionInfo = _$_EventStoreBaseActionController.startAction(
+        name: '_EventStoreBase.addFavoriteItemList');
+    try {
+      return super.addFavoriteItemList(model);
+    } finally {
+      _$_EventStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 isLoading: ${isLoading},
 isError: ${isError},
-softEventList: ${softEventList}
+softEventList: ${softEventList},
+favoriteEventList: ${favoriteEventList}
     ''';
   }
 }

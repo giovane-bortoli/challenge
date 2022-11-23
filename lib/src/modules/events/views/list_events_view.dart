@@ -1,6 +1,6 @@
 import 'package:challenge/main.dart';
 import 'package:challenge/src/modules/events/controller/event_store.dart';
-import 'package:challenge/src/modules/events/models/event_model.dart';
+
 import 'package:challenge/src/modules/events/views/favorite_events_view.dart';
 import 'package:challenge/src/modules/events/views/soft_events_view.dart';
 import 'package:challenge/src/shared/utils/app_colors.dart';

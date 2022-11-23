@@ -1,5 +1,7 @@
-abstract class StorageService {
-  Future<void> write();
+import 'package:challenge/src/modules/events/models/event_model.dart';
 
-  Future<String?> read();
+abstract class StorageService {
+  Future<List<EventModel>> getStringList();
+
+  Future<void> setStringList(List<EventModel> eventmodel);
 }

@@ -1,8 +1,11 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
-import 'package:challenge/src/modules/events/models/event_model.dart';
+import 'package:challenge/src/core/local_data_source/storage_service_impl.dart';
 import 'package:mobx/mobx.dart';
 
+import 'package:challenge/src/core/local_data_source/storage_service.dart';
+import 'package:challenge/src/modules/events/models/event_model.dart';
 import 'package:challenge/src/modules/events/service/service_interface.dart';
 
 part 'event_store.g.dart';
@@ -11,6 +14,7 @@ class EventStore = _EventStoreBase with _$EventStore;
 
 abstract class _EventStoreBase with Store {
   final ServiceInterface service;
+  StorageServiceImpl prefs = StorageServiceImpl();
 
   _EventStoreBase({
     required this.service,
@@ -59,6 +63,34 @@ abstract class _EventStoreBase with Store {
     } catch (_) {
       setIsLoading(false);
       setIsError(true);
+    }
+  }
+
+  @observable
+  List<EventModel> favoriteEventList = [];
+
+  @action
+  void setFavoriteEventList(List<EventModel> value) =>
+      favoriteEventList = value;
+
+  @action
+  void addFavoriteItemList(EventModel model) {
+    try {
+      favoriteEventList.add(model);
+      inspect(model);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  @action
+  Future<void> loadFavoriteList() async {
+    try {
+      final result = await prefs.getStringList();
+      favoriteEventList = result;
+      favoriteEventList.addAll(result);
+    } catch (e) {
+      throw [];
     }
   }
 }

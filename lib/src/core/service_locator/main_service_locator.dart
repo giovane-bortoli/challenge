@@ -31,13 +31,6 @@ class MainServiceLocator {
     locator.registerFactory<DatabaseClient>(
         () => DatabaseImpl(auth: locator.get<FirebaseAuth>()));
 
-    locator.registerFactory<FlutterSecureStorage>(
-        () => const FlutterSecureStorage());
-
-    locator.registerFactory<StorageService>(() => StorageServiceImpl(
-          storage: locator.get<FlutterSecureStorage>(),
-        ));
-
     locator.registerFactory<Dio>(() => Dio());
 
     //service interface
@@ -52,7 +45,8 @@ class MainServiceLocator {
     locator.registerFactory<AuthStore>(
         () => AuthStore(auth: locator.get<AuthServiceInterface>()));
 
-    locator.registerSingleton<EventStore>(
-        EventStore(service: locator.get<ServiceInterface>()));
+    locator.registerSingleton<EventStore>(EventStore(
+      service: locator.get<ServiceInterface>(),
+    ));
   }
 }
