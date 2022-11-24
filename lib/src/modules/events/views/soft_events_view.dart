@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:challenge/main.dart';
 import 'package:challenge/src/modules/events/widgets/resume_event_card.dart';
 import 'package:challenge/src/shared/widgets/empty_state.dart';
@@ -50,17 +51,30 @@ class _SoftEventsViewState extends State<SoftEventsView> {
               : Column(
                   children: [
                     Expanded(
+                      flex: 5,
                       child: ListView.builder(
                         itemCount: eventStore.softEventList.length,
                         itemBuilder: ((context, index) {
+                          final eventData = eventStore.softEventList[index];
                           return InkWell(
                             onTap: () => Navigator.popAndPushNamed(
                               context,
                               '/eventDetails',
                               arguments: eventStore.softEventList[index],
                             ),
-                            child: ResumedEventCard(
-                              event: eventStore.softEventList[index],
+                            child: Column(
+                              children: [
+                                ResumedEventCard(
+                                  event: eventStore.softEventList[index],
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    eventStore.addFavoriteItemList(eventData);
+                                    eventStore.addFavoriteListToPrefs();
+                                  },
+                                  child: const Text('Salvar evento'),
+                                ),
+                              ],
                             ),
                           );
                         }),

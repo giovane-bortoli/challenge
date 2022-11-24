@@ -18,7 +18,6 @@ class Services implements ServiceInterface {
   @override
   Future<List<EventModel>> getCharacters() async {
     final response = await client.getRequest('${AppConfigs.baseUrl}/events');
-    inspect(response);
     switch (response.statusCode) {
       case 200:
         return List.from(response.data)

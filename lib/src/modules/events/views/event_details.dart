@@ -17,7 +17,6 @@ class _EventDetailsState extends State<EventDetails> {
   final eventStore = locator<EventStore>();
   @override
   Widget build(BuildContext context) {
-    final event = ModalRoute.of(context)!.settings.arguments as EventModel;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Detalhes do evento'),
@@ -28,29 +27,32 @@ class _EventDetailsState extends State<EventDetails> {
           icon: const Icon(Icons.arrow_back_ios),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Stack(
-          alignment: AlignmentDirectional.topCenter,
-          children: [
-            EventCard(
-              eventModel: event,
-              maxLinesDescription: 10,
-            ),
-            Positioned(
-              bottom: 8,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextButton(
-                  onPressed: () {
-                    //eventStore.addFavoriteList(eventStore.favoriteEventList);
-                  },
-                  child: const Text('Salvar como favorito'),
-                ),
+      body: content(context),
+    );
+  }
+
+  Widget content(context) {
+    final event = ModalRoute.of(context)!.settings.arguments as EventModel;
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Stack(
+        alignment: AlignmentDirectional.topCenter,
+        children: [
+          EventCard(
+            eventModel: event,
+            maxLinesDescription: 10,
+          ),
+          Positioned(
+            bottom: 8,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextButton(
+                onPressed: () {},
+                child: const Text('Salvar como favorito'),
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

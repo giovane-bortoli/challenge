@@ -81,6 +81,15 @@ mixin _$EventStore on _EventStoreBase, Store {
     return _$getSoftEventListAsyncAction.run(() => super.getSoftEventList());
   }
 
+  late final _$addFavoriteListToPrefsAsyncAction =
+      AsyncAction('_EventStoreBase.addFavoriteListToPrefs', context: context);
+
+  @override
+  Future<void> addFavoriteListToPrefs() {
+    return _$addFavoriteListToPrefsAsyncAction
+        .run(() => super.addFavoriteListToPrefs());
+  }
+
   late final _$loadFavoriteListAsyncAction =
       AsyncAction('_EventStoreBase.loadFavoriteList', context: context);
 

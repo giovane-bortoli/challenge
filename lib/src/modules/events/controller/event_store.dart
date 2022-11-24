@@ -58,7 +58,7 @@ abstract class _EventStoreBase with Store {
       initialStateLoading();
       final result = await service.getCharacters();
       setSoftEventList(result);
-      inspect(result);
+
       endStateLoading();
     } catch (_) {
       setIsLoading(false);
@@ -76,11 +76,15 @@ abstract class _EventStoreBase with Store {
   @action
   void addFavoriteItemList(EventModel model) {
     try {
-      favoriteEventList.add(model);
-      inspect(model);
+      favoriteEventList.insert(0, model);
     } catch (e) {
       throw e;
     }
+  }
+
+  @action
+  Future<void> addFavoriteListToPrefs() async {
+    await prefs.setStringList(favoriteEventList);
   }
 
   @action
@@ -88,7 +92,6 @@ abstract class _EventStoreBase with Store {
     try {
       final result = await prefs.getStringList();
       favoriteEventList = result;
-      favoriteEventList.addAll(result);
     } catch (e) {
       throw [];
     }
