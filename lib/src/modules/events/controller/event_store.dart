@@ -47,6 +47,16 @@ abstract class _EventStoreBase with Store {
   }
 
   @observable
+  bool isConnected = false;
+  @action
+  void setIsConnected(bool value) => isConnected = value;
+
+  @observable
+  String status = '';
+  @action
+  void setStatus(String value) => status = value;
+
+  @observable
   List<EventModel> softEventList = [];
 
   @action
@@ -58,7 +68,6 @@ abstract class _EventStoreBase with Store {
       initialStateLoading();
       final result = await service.getCharacters();
       setSoftEventList(result);
-
       endStateLoading();
     } catch (_) {
       setIsLoading(false);
@@ -76,7 +85,7 @@ abstract class _EventStoreBase with Store {
   @action
   void addFavoriteItemList(EventModel model) {
     try {
-      favoriteEventList.insert(0, model);
+      favoriteEventList.add(model);
     } catch (e) {
       throw e;
     }
@@ -90,10 +99,13 @@ abstract class _EventStoreBase with Store {
   @action
   Future<void> loadFavoriteList() async {
     try {
+      initialStateLoading();
       final result = await prefs.getStringList();
       favoriteEventList = result;
-    } catch (e) {
-      throw [];
+      endStateLoading();
+    } catch (_) {
+      setIsLoading(false);
+      setIsError(true);
     }
   }
 }

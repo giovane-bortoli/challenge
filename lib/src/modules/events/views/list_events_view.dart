@@ -1,9 +1,14 @@
+import 'dart:async';
+
 import 'package:challenge/main.dart';
+import 'package:challenge/src/modules/auth/controller/auth_store.dart';
 import 'package:challenge/src/modules/events/controller/event_store.dart';
 
 import 'package:challenge/src/modules/events/views/favorite_events_view.dart';
 import 'package:challenge/src/modules/events/views/soft_events_view.dart';
 import 'package:challenge/src/shared/utils/app_colors.dart';
+import 'package:challenge/src/shared/widgets/custom_snack_bar.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -19,16 +24,33 @@ class ListEventsView extends StatefulWidget {
 
 class _ListEventsViewState extends State<ListEventsView> {
   final eventStore = locator<EventStore>();
+  final authStore = locator<AuthStore>();
+  late Connectivity connectivity;
+  late StreamSubscription subscription;
 
-  // @override
-  // void initState() {
-  //   initialEventList();
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    checkConnectivity();
 
-  // Future<void> initialEventList() async {
-  //   await eventStore.getSoftEventList();
-  // }
+    subscription = Connectivity().onConnectivityChanged.listen((result) {
+      CustomSnackBar.successSnackBar(context,
+          message: 'Conexão alterada para:${result.name}');
+    });
+
+    super.initState();
+  }
+
+  Future<void> checkConnectivity() async {
+    var result = await Connectivity().checkConnectivity();
+
+    if (result == ConnectivityResult.mobile) {
+      eventStore.status = 'Mobile internet';
+    } else if (result == ConnectivityResult.wifi) {
+      eventStore.status = 'Wi-Fi';
+    } else if (result == ConnectivityResult.none) {
+      eventStore.status = 'Offline';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +58,38 @@ class _ListEventsViewState extends State<ListEventsView> {
       children: [
         DefaultTabController(
           length: 2,
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Text('Eventos'),
-            ),
-            body: content(context),
-          ),
+          child: Observer(builder: (context) {
+            return Scaffold(
+              appBar: AppBar(
+                toolbarHeight: 70,
+                centerTitle: true,
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25),
+                )),
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 24),
+                    child: Text(
+                      eventStore.status,
+                      style: const TextStyle(
+                        color: Colors.green,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        authStore.logOut().then((value) =>
+                            Navigator.popAndPushNamed(context, '/login'));
+                      },
+                      icon: const Icon(Icons.exit_to_app))
+                ],
+                title: const Text('Eventos'),
+              ),
+              body: content(context),
+            );
+          }),
         ),
       ],
     );

@@ -45,6 +45,11 @@ abstract class _AuthStoreBase with Store {
     }
   }
 
+  @action
+  Future<void> logOut() async {
+    await auth.signOut();
+  }
+
   // @action
   // Stream<User?> checkLogin(User? user) async* {
   //   auth.stayLogged(user);

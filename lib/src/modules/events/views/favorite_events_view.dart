@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:async';
+
 import 'package:challenge/main.dart';
 import 'package:challenge/src/modules/events/widgets/resume_event_card.dart';
 import 'package:challenge/src/shared/widgets/empty_state.dart';

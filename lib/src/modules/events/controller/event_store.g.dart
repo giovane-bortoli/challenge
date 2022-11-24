@@ -41,6 +41,22 @@ mixin _$EventStore on _EventStoreBase, Store {
     });
   }
 
+  late final _$isConnectedAtom =
+      Atom(name: '_EventStoreBase.isConnected', context: context);
+
+  @override
+  bool get isConnected {
+    _$isConnectedAtom.reportRead();
+    return super.isConnected;
+  }
+
+  @override
+  set isConnected(bool value) {
+    _$isConnectedAtom.reportWrite(value, super.isConnected, () {
+      super.isConnected = value;
+    });
+  }
+
   late final _$softEventListAtom =
       Atom(name: '_EventStoreBase.softEventList', context: context);
 
@@ -146,6 +162,17 @@ mixin _$EventStore on _EventStoreBase, Store {
   }
 
   @override
+  void setIsConnected(bool value) {
+    final _$actionInfo = _$_EventStoreBaseActionController.startAction(
+        name: '_EventStoreBase.setIsConnected');
+    try {
+      return super.setIsConnected(value);
+    } finally {
+      _$_EventStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setSoftEventList(List<EventModel> value) {
     final _$actionInfo = _$_EventStoreBaseActionController.startAction(
         name: '_EventStoreBase.setSoftEventList');
@@ -183,6 +210,7 @@ mixin _$EventStore on _EventStoreBase, Store {
     return '''
 isLoading: ${isLoading},
 isError: ${isError},
+isConnected: ${isConnected},
 softEventList: ${softEventList},
 favoriteEventList: ${favoriteEventList}
     ''';

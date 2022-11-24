@@ -1,5 +1,6 @@
 import 'package:challenge/src/shared/utils/app_colors.dart';
 import 'package:challenge/src/shared/utils/app_images.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,8 +10,9 @@ class SplashScreen extends StatelessWidget {
 
   Future<void> _loadSettings(context) async {
     Future.delayed(const Duration(seconds: 3), () {
-      //navegação com provider e push and named
-      Navigator.popAndPushNamed(context, '/login');
+      FirebaseAuth.instance.currentUser != null
+          ? Navigator.popAndPushNamed(context, '/events')
+          : Navigator.popAndPushNamed(context, '/login');
     });
     FlutterNativeSplash.remove();
   }
