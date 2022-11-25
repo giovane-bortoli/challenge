@@ -67,13 +67,21 @@ class _SoftEventsViewState extends State<SoftEventsView> {
                                 ResumedEventCard(
                                   event: eventStore.softEventList[index],
                                 ),
-                                TextButton(
-                                  onPressed: () {
-                                    eventStore.addFavoriteItemList(eventData);
-                                    eventStore.addFavoriteListToPrefs();
-                                  },
-                                  child: const Text('Salvar evento'),
-                                ),
+                                eventStore.favoriteEventList.any((model) =>
+                                        model.id ==
+                                        eventStore.softEventList[index].id)
+                                    ? TextButton(
+                                        onPressed: () {},
+                                        child: const Text(
+                                            'Evento salvo como favorito!'))
+                                    : TextButton(
+                                        onPressed: () {
+                                          eventStore
+                                              .addFavoriteItemList(eventData);
+                                          eventStore.addFavoriteListToPrefs();
+                                        },
+                                        child: const Text('Salvar evento'),
+                                      ),
                               ],
                             ),
                           );
