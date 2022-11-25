@@ -1,16 +1,50 @@
-# challenge
 
-A new Flutter project.
+# Challenge Project
 
-## Getting Started
+Desafio que consiste em analisar nossos conhecimentos das ultimas semanas.
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
+
+## Features
+
+- Autenticação(Firebase)
+- Consumo de API
+- Detalhes de cada evento consumido
+- persistir no Shared Preference cada evento
+- listar cada evento persistido
+- verificar qual tipo de conexão está ativa
+
+
+## Login
+
+Dados do Firebase para testar o app:
+
+login: teste51@teste.com
+senha: 123456
+
+Possuí tratamento de erros ao logar porém não possuí mascará os campos.
+
+É verificado se o usuário já está logado ou não mesmo reiniciando o app.
+
+
+
+
+
+## Consumo API
+
+Ao logar será levado para tela onde será exibido os eventos, podendo salva-los no armazenamento local e também olhar os detalhes de cada evento.
+
+
+Nessa tela também na AppBar é possível ver qual conexão está ativa no momento e caso seja modificada, será mostrada uma Snack Bar customizada informando.
+## Eventos Favoritos
+
+Logo na segunda tab é mostrado a lista de eventos que foram salvos, podendo também olhar os detalhes de cada evento.
+
+
+## Arquitetura
+
+Foi usada arquitetura MVC no projeto.
