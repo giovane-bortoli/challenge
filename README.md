@@ -5,7 +5,7 @@ Desafio que consiste em analisar nossos conhecimentos das ultimas semanas.
 
 
 
-
+url que vai no arquivo .env: BASE_URL=https://628e3133368687f3e7121f1a.mockapi.io/api/v1
 
 
 
