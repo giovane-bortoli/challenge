@@ -42,16 +42,6 @@ class _EventDetailsState extends State<EventDetails> {
             eventModel: event,
             maxLinesDescription: 10,
           ),
-          Positioned(
-            bottom: 8,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextButton(
-                onPressed: () {},
-                child: const Text('Salvar como favorito'),
-              ),
-            ),
-          )
         ],
       ),
     );
