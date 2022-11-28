@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:challenge/main.dart';
 import 'package:challenge/src/modules/auth/controller/auth_store.dart';
+import 'package:challenge/src/modules/events/controller/connectivity_store.dart';
 import 'package:challenge/src/modules/events/controller/event_store.dart';
 
 import 'package:challenge/src/modules/events/views/favorite_events_view.dart';
@@ -25,31 +26,12 @@ class ListEventsView extends StatefulWidget {
 class _ListEventsViewState extends State<ListEventsView> {
   final eventStore = locator<EventStore>();
   final authStore = locator<AuthStore>();
-  late Connectivity connectivity;
-  late StreamSubscription subscription;
+  final connectivityStore = locator<ConnectivityStore>();
 
   @override
   void initState() {
-    checkConnectivity();
-
-    subscription = Connectivity().onConnectivityChanged.listen((result) {
-      CustomSnackBar.successSnackBar(context,
-          message: 'Conexão alterada para:${result.name}');
-    });
-
+    connectivityStore.initConnectivity();
     super.initState();
-  }
-
-  Future<void> checkConnectivity() async {
-    var result = await Connectivity().checkConnectivity();
-
-    if (result == ConnectivityResult.mobile) {
-      eventStore.status = 'Mobile internet';
-    } else if (result == ConnectivityResult.wifi) {
-      eventStore.status = 'Wi-Fi';
-    } else if (result == ConnectivityResult.none) {
-      eventStore.status = 'Offline';
-    }
   }
 
   @override
@@ -61,6 +43,25 @@ class _ListEventsViewState extends State<ListEventsView> {
           child: Observer(builder: (context) {
             return Scaffold(
               appBar: AppBar(
+                leading: StreamBuilder(
+                  stream: Stream.value(connectivityStore.connectionStatus),
+                  builder: ((context, snapshot) =>
+                      snapshot.data == ConnectivityResult.wifi
+                          ? const Icon(
+                              Icons.wifi,
+                              color: Colors.green,
+                            )
+                          : connectivityStore.connectionStatus ==
+                                  ConnectivityResult.mobile
+                              ? const Icon(
+                                  Icons.signal_cellular_alt,
+                                  color: Colors.yellow,
+                                )
+                              : const Icon(
+                                  Icons.close,
+                                  color: Colors.red,
+                                )),
+                ),
                 toolbarHeight: 70,
                 centerTitle: true,
                 shape: const RoundedRectangleBorder(

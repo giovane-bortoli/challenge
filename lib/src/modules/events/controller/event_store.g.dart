@@ -57,6 +57,22 @@ mixin _$EventStore on _EventStoreBase, Store {
     });
   }
 
+  late final _$statusAtom =
+      Atom(name: '_EventStoreBase.status', context: context);
+
+  @override
+  String get status {
+    _$statusAtom.reportRead();
+    return super.status;
+  }
+
+  @override
+  set status(String value) {
+    _$statusAtom.reportWrite(value, super.status, () {
+      super.status = value;
+    });
+  }
+
   late final _$softEventListAtom =
       Atom(name: '_EventStoreBase.softEventList', context: context);
 
@@ -173,6 +189,17 @@ mixin _$EventStore on _EventStoreBase, Store {
   }
 
   @override
+  void setStatus(String value) {
+    final _$actionInfo = _$_EventStoreBaseActionController.startAction(
+        name: '_EventStoreBase.setStatus');
+    try {
+      return super.setStatus(value);
+    } finally {
+      _$_EventStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setSoftEventList(List<EventModel> value) {
     final _$actionInfo = _$_EventStoreBaseActionController.startAction(
         name: '_EventStoreBase.setSoftEventList');
@@ -211,6 +238,7 @@ mixin _$EventStore on _EventStoreBase, Store {
 isLoading: ${isLoading},
 isError: ${isError},
 isConnected: ${isConnected},
+status: ${status},
 softEventList: ${softEventList},
 favoriteEventList: ${favoriteEventList}
     ''';

@@ -110,7 +110,7 @@ class _LoginViewState extends State<LoginView> {
                   email: authStore.email,
                   password: authStore.password,
                 );
-                if (result.runtimeType == UserCredential) {
+                if (result is UserCredential) {
                   Navigator.popAndPushNamed(context, '/events');
                 }
               } catch (e) {
