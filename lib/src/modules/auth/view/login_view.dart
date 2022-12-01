@@ -4,11 +4,13 @@ import 'package:challenge/src/modules/auth/service/errors/handle_firebase_errors
 import 'package:challenge/src/shared/theme/font_theme.dart';
 import 'package:challenge/src/shared/utils/app_colors.dart';
 import 'package:challenge/src/shared/utils/app_images.dart';
+import 'package:challenge/src/shared/widgets/custom_snack_bar.dart';
 import 'package:challenge/src/shared/widgets/custom_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mobx/mobx.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -19,6 +21,28 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final authStore = locator<AuthStore>();
+  late final ReactionDisposer reactionFirebase;
+
+  @override
+  void initState() {
+    errorWidget();
+    super.initState();
+  }
+
+  void errorWidget() {
+    reactionFirebase = reaction((_) => authStore.firebaseError, (_) {
+      authStore.firebaseError
+          ? CustomSnackBar.errorSnackBar(context,
+              message: authStore.messageFirebaseError)
+          : null;
+    });
+  }
+
+  @override
+  void dispose() {
+    reactionFirebase();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +129,14 @@ class _LoginViewState extends State<LoginView> {
           padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
           child: ElevatedButton(
             onPressed: () async {
+              // final result = await authStore.login(
+              //     email: authStore.email, password: authStore.password);
+              // if (result == UserCredential) {
+              //   Navigator.popAndPushNamed(context, '/events');
+              // } else {
+              //   errorWidget();
+              // }
+
               try {
                 final result = await authStore.login(
                   email: authStore.email,

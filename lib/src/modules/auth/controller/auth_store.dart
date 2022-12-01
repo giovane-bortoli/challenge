@@ -32,16 +32,38 @@ abstract class _AuthStoreBase with Store {
   @action
   void setPasswordVisible(bool value) => passwordVisible = value;
 
+  @observable
+  String messageFirebaseError = '';
   @action
-  Future<UserCredential> login(
+  void setMessageFirebaseError(String value) => messageFirebaseError = value;
+
+  @observable
+  bool firebaseError = false;
+  @action
+  void setFirebaseError(bool value) => firebaseError = value;
+
+  @action
+  Future<UserCredential?> login(
       {required String email, required String password}) async {
     try {
-      return await auth.signIn(
+      await auth.signIn(
         email: email,
         password: password,
       );
     } on FirebaseAuthException catch (e) {
-      throw e;
+      if (e.code == 'user-not-found') {
+        setFirebaseError(true);
+        setMessageFirebaseError('Usuário não encontrado!');
+      } else if (e.code == 'wrong-password') {
+        setFirebaseError(true);
+        setMessageFirebaseError('Usuário ou senha incorreta!');
+      } else if (e.code == 'invalid-email') {
+        setFirebaseError(true);
+        setMessageFirebaseError('Email incorreto');
+      } else {
+        setFirebaseError(true);
+        setMessageFirebaseError('Ocorreu um erro, tente novamente!');
+      }
     }
   }
 
@@ -49,9 +71,4 @@ abstract class _AuthStoreBase with Store {
   Future<void> logOut() async {
     await auth.signOut();
   }
-
-  // @action
-  // Stream<User?> checkLogin(User? user) async* {
-  //   auth.stayLogged(user);
-  // }
 }

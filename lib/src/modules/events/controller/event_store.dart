@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 import 'package:challenge/src/core/local_data_source/storage_service_impl.dart';
+import 'package:challenge/src/core/remote_data_source/errors/handle_erros.dart';
 import 'package:mobx/mobx.dart';
 
 import 'package:challenge/src/core/local_data_source/storage_service.dart';
@@ -69,7 +70,15 @@ abstract class _EventStoreBase with Store {
       final result = await service.getCharacters();
       setSoftEventList(result);
       endStateLoading();
-    } catch (_) {
+    } on NotFoundException {
+      throw 'Página não encontrada';
+    } on ForbiddenException {
+      throw 'Sem permissão para acessar a página';
+    } on InternalServerException {
+      throw 'Erro interno do servidor';
+    } on GenericException {
+      throw 'Ocorreu um erro, tente novamente';
+    } finally {
       setIsLoading(false);
       setIsError(true);
     }

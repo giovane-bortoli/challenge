@@ -56,11 +56,44 @@ mixin _$AuthStore on _AuthStoreBase, Store {
     });
   }
 
+  late final _$messageFirebaseErrorAtom =
+      Atom(name: '_AuthStoreBase.messageFirebaseError', context: context);
+
+  @override
+  String get messageFirebaseError {
+    _$messageFirebaseErrorAtom.reportRead();
+    return super.messageFirebaseError;
+  }
+
+  @override
+  set messageFirebaseError(String value) {
+    _$messageFirebaseErrorAtom.reportWrite(value, super.messageFirebaseError,
+        () {
+      super.messageFirebaseError = value;
+    });
+  }
+
+  late final _$firebaseErrorAtom =
+      Atom(name: '_AuthStoreBase.firebaseError', context: context);
+
+  @override
+  bool get firebaseError {
+    _$firebaseErrorAtom.reportRead();
+    return super.firebaseError;
+  }
+
+  @override
+  set firebaseError(bool value) {
+    _$firebaseErrorAtom.reportWrite(value, super.firebaseError, () {
+      super.firebaseError = value;
+    });
+  }
+
   late final _$loginAsyncAction =
       AsyncAction('_AuthStoreBase.login', context: context);
 
   @override
-  Future<UserCredential> login(
+  Future<UserCredential?> login(
       {required String email, required String password}) {
     return _$loginAsyncAction
         .run(() => super.login(email: email, password: password));
@@ -111,11 +144,35 @@ mixin _$AuthStore on _AuthStoreBase, Store {
   }
 
   @override
+  void setMessageFirebaseError(String value) {
+    final _$actionInfo = _$_AuthStoreBaseActionController.startAction(
+        name: '_AuthStoreBase.setMessageFirebaseError');
+    try {
+      return super.setMessageFirebaseError(value);
+    } finally {
+      _$_AuthStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setFirebaseError(bool value) {
+    final _$actionInfo = _$_AuthStoreBaseActionController.startAction(
+        name: '_AuthStoreBase.setFirebaseError');
+    try {
+      return super.setFirebaseError(value);
+    } finally {
+      _$_AuthStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 email: ${email},
 password: ${password},
-passwordVisible: ${passwordVisible}
+passwordVisible: ${passwordVisible},
+messageFirebaseError: ${messageFirebaseError},
+firebaseError: ${firebaseError}
     ''';
   }
 }
