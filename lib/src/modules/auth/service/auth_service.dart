@@ -27,7 +27,7 @@ class AuthService extends AuthServiceInterface {
       return await auth.signInWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      throw e.code;
+      throw e;
     }
   }
 

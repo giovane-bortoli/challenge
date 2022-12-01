@@ -46,7 +46,7 @@ abstract class _AuthStoreBase with Store {
   Future<UserCredential?> login(
       {required String email, required String password}) async {
     try {
-      await auth.signIn(
+      return await auth.signIn(
         email: email,
         password: password,
       );
@@ -65,6 +65,7 @@ abstract class _AuthStoreBase with Store {
         setMessageFirebaseError('Ocorreu um erro, tente novamente!');
       }
     }
+    return null;
   }
 
   @action

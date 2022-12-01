@@ -25,11 +25,11 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   void initState() {
-    errorWidget();
+    errorReaction();
     super.initState();
   }
 
-  void errorWidget() {
+  void errorReaction() {
     reactionFirebase = reaction((_) => authStore.firebaseError, (_) {
       authStore.firebaseError
           ? CustomSnackBar.errorSnackBar(context,
@@ -129,24 +129,10 @@ class _LoginViewState extends State<LoginView> {
           padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
           child: ElevatedButton(
             onPressed: () async {
-              // final result = await authStore.login(
-              //     email: authStore.email, password: authStore.password);
-              // if (result == UserCredential) {
-              //   Navigator.popAndPushNamed(context, '/events');
-              // } else {
-              //   errorWidget();
-              // }
-
-              try {
-                final result = await authStore.login(
-                  email: authStore.email,
-                  password: authStore.password,
-                );
-                if (result is UserCredential) {
-                  Navigator.popAndPushNamed(context, '/events');
-                }
-              } catch (e) {
-                await HandleFirebaseErrors.getErrorMessageView(e, context);
+              final result = await authStore.login(
+                  email: authStore.email, password: authStore.password);
+              if (result != null) {
+                Navigator.popAndPushNamed(context, '/events');
               }
             },
             child: const Text('LOGIN'),
